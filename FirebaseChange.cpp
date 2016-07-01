@@ -4,6 +4,7 @@
 void FirebaseChange::begin(String FirebaseProjectName, String ThumbPrint){
 	_FirebaseProjectName = FirebaseProjectName;
 	_ThumbPrint = ThumbPrint;
+	_http.setReuse(true);
 }
 
 boolean FirebaseChange::changed(String parent){
