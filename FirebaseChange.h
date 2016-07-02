@@ -11,11 +11,11 @@ class FirebaseChange
 {
   public:
   	void begin(String FirebaseProjectName, String ThumbPrint);
-  	boolean changed(String parent);
+    boolean available(String parent);
     String status();
     String payload();
     String getString(String element);
-    boolean update(String parent, String element, String value);
+    boolean setString(String parent, String element, String value);
   private:
     String _Payload = "";
     String _Status = "";
