@@ -1,13 +1,12 @@
-//#include <ESP8266HTTPClient.h>
 #include "FirebaseChange.h"
 
 void FirebaseChange::begin(String FirebaseProjectName, String ThumbPrint){
 	_FirebaseProjectName = FirebaseProjectName;
 	_ThumbPrint = ThumbPrint;
-	_http.setReuse(true);
+  _http.setReuse(true);
 }
 
-boolean FirebaseChange::changed(String parent){
+boolean FirebaseChange::available(String parent = ""){
   _http.begin(_FirebaseProjectName + parent + ".json", _ThumbPrint);
   _http.setUserAgent("Mozilla /5.0");
   _http.addHeader("Content-Type","application/json");
@@ -30,7 +29,7 @@ boolean FirebaseChange::changed(String parent){
   }
 }
 
-boolean FirebaseChange::update(String parent, String element, String value){
+boolean FirebaseChange::setString(String parent, String element, String value){
   _http.begin(_FirebaseProjectName + parent + ".json?x-http-method-override=PATCH", _ThumbPrint);
 
   String data = "{\"" + element + "\":\"" + value + "\"}";
