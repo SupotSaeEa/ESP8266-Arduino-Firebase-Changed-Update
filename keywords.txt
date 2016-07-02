@@ -1,7 +1,8 @@
 FirebaseChange 	KEYWORD1
-changed 		KEYWORD2
+available 		KEYWORD2
 status			KEYWORD3
 payload			KEYWORD4
-update			KEYWORD5
+setString		KEYWORD5
 begin			KEYWORD6
+getString		KEYWORD7
 
