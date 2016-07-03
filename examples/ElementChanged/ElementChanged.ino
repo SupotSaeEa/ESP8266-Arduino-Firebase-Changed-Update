@@ -1,6 +1,6 @@
 
 /*
- *  This sketch sends data via HTTP GET requests to data.sparkfun.com service.
+ *  This sketch gets data via HTTP GET requests to data.sparkfun.com service.
  *
  *  You need to get streamId and privateKey at data.sparkfun.com and paste them
  *  below. Or just customize this script to talk to other HTTP servers.
@@ -12,7 +12,7 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-String firebaseProject = "https://<ProjectID>.firebaseio.com/";
+String firebaseProject = "https://<Project URI>/";
 // SHA1 fingerprint
 String thumbPrint = "xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx";
 
@@ -23,33 +23,31 @@ void setup() {
   delay(10);
   Serial.println();
   Serial.println("Begin...");
+  
 	WiFiMulti.addAP("ssid","password");
 
 	fc.begin(firebaseProject, thumbPrint);
 
 }
 
-int loopCount = 0;
+int value = 0;
 
 void loop() {
   delay(1000);
-  ++loopCount;
+  ++value;
 
   if(WiFiMulti.run() == WL_CONNECTED){
-  	Serial.printf("[%d] Connect to firebase database. ", loopCount);
+  	Serial.printf("[%d] Connect to firebase database. ", value);
 
-    String parent = "<parent>";   // name of element's parent 
-    String element = "<element>"; // name of element
-    String value = "<value>";     // value of element
+    String parent = "<parent>";   // name of element's parent
+    String element = "<element>"; // name of element that getting value
 
-    if(fc.setString(parent, element, value)){
-
-      Serial.println(" GET payload: " +fc.payload());
-      String updateValue = fc.getString(element);
-      Serial.println(element + " : " + updateValue);
-
-    } else {
-      Serial.println(fc.status());
-    }
+		if(fc.available(parent)){
+      Serial.print(" GET payload: " +fc.payload());
+      String elementValue = fc.getString(element);
+      Serial.println(" " + element + " : " + elementValue);
+		} else {
+			Serial.println(fc.status());
+		}
   }
 }
