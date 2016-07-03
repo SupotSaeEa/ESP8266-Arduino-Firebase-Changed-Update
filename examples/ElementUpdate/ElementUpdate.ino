@@ -12,7 +12,7 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-String firebaseProject = "https://<Project URI>/";
+String firebaseProject = "https://<ProjectID>.firebaseio.com/";
 // SHA1 fingerprint
 String thumbPrint = "xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx";
 
@@ -42,7 +42,7 @@ void loop() {
     String element = "<element>"; // name of element
     String value = "<value>";     // value of element
 
-    if(fc.update(parent, element, value)){
+    if(fc.setString(parent, element, value)){
 
       Serial.println(" GET payload: " +fc.payload());
       String updateValue = fc.getString(element);
