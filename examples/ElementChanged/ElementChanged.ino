@@ -12,7 +12,7 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-String firebaseProject = "https://<Project URI>/";
+String firebaseProject = "https://<ProjectID>.firebaseio.com/";
 // SHA1 fingerprint
 String thumbPrint = "xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx xx";
 
@@ -23,31 +23,33 @@ void setup() {
   delay(10);
   Serial.println();
   Serial.println("Begin...");
-  
 	WiFiMulti.addAP("ssid","password");
 
 	fc.begin(firebaseProject, thumbPrint);
 
 }
 
-int value = 0;
+int loopCount = 0;
 
 void loop() {
   delay(1000);
-  ++value;
+  ++loopCount;
 
   if(WiFiMulti.run() == WL_CONNECTED){
-  	Serial.printf("[%d] Connect to firebase database. ", value);
+  	Serial.printf("[%d] Connect to firebase database. ", loopCount);
 
-    String parent = "<parent>";   // name of element's parent
-    String element = "<element>"; // name of element that getting value
+    String parent = "<parent>";   // name of element's parent 
+    String element = "<element>"; // name of element
+    String value = "<value>";     // value of element
 
-		if(fc.changed(parent)){
+    if(fc.setString(parent, element, value)){
+
       Serial.println(" GET payload: " +fc.payload());
-      String elementValue = fc.getString(element);
-      Serial.println(element + " : " + elementValue);
-		} else {
-			Serial.println(fc.status());
-		}
+      String updateValue = fc.getString(element);
+      Serial.println(element + " : " + updateValue);
+
+    } else {
+      Serial.println(fc.status());
+    }
   }
 }
